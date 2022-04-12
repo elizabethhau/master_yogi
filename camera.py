@@ -160,26 +160,41 @@ class VideoCamera(object):
                                             landmarks[self.mp_pose.PoseLandmark.RIGHT_ANKLE.value])
 
     # ----------------------------------------------------------------------------------------------------------------
+    ##T-Pose to start...
+
+    ##check arms firsts
+    if left_elbow_angle < 165 or left_elbow_angle > 195:
+      print('Extend your left arm straight')
+
+      print('Can you do that?')
+
+    if right_elbow_angle < 165 or right_elbow_angle > 195:
+      print('Extend your right arm straight')
+
+      print('Can you do that?') ##could we get the system to wait for a response here from the user?
+
+
+    ##Original Implementation ....
 
     # Check if it is the warrior II pose or the T pose.
     # As for both of them, both arms should be straight and shoulders should be at the specific angle.
     # ----------------------------------------------------------------------------------------------------------------
     # Check if the both arms are straight.
-    if left_elbow_angle > 165 and left_elbow_angle < 195 and right_elbow_angle > 165 and right_elbow_angle < 195:
+    #if left_elbow_angle > 165 and left_elbow_angle < 195 and right_elbow_angle > 165 and right_elbow_angle < 195:
 
       # Check if shoulders are at the required angle.
-      if left_shoulder_angle > 80 and left_shoulder_angle < 110 and right_shoulder_angle > 80 and right_shoulder_angle < 110:
+      #if left_shoulder_angle > 80 and left_shoulder_angle < 110 and right_shoulder_angle > 80 and right_shoulder_angle < 110:
 
         # Check if it is the warrior II pose.
         # ----------------------------------------------------------------------------------------------------------------
 
         # Check if one leg is straight.
-        if left_knee_angle > 165 and left_knee_angle < 195 or right_knee_angle > 165 and right_knee_angle < 195:
+        #if left_knee_angle > 165 and left_knee_angle < 195 or right_knee_angle > 165 and right_knee_angle < 195:
 
           # Check if the other leg is bended at the required angle.
-          if left_knee_angle > 90 and left_knee_angle < 120 or right_knee_angle > 90 and right_knee_angle < 120:
+          #if left_knee_angle > 90 and left_knee_angle < 120 or right_knee_angle > 90 and right_knee_angle < 120:
             # Specify the label of the pose that is Warrior II pose.
-            label = 'Warrior II Pose'
+            #label = 'Warrior II Pose'
 
           # ----------------------------------------------------------------------------------------------------------------
 
@@ -187,9 +202,9 @@ class VideoCamera(object):
         # ----------------------------------------------------------------------------------------------------------------
 
         # Check if both legs are straight
-        if left_knee_angle > 160 and left_knee_angle < 195 and right_knee_angle > 160 and right_knee_angle < 195:
+        #if left_knee_angle > 160 and left_knee_angle < 195 and right_knee_angle > 160 and right_knee_angle < 195:
           # Specify the label of the pose that is tree pose.
-          label = 'T Pose'
+          #label = 'T Pose'
 
     # ----------------------------------------------------------------------------------------------------------------
 
@@ -197,12 +212,12 @@ class VideoCamera(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     # Check if one leg is straight
-    if left_knee_angle > 165 and left_knee_angle < 195 or right_knee_angle > 165 and right_knee_angle < 195:
+    #if left_knee_angle > 165 and left_knee_angle < 195 or right_knee_angle > 165 and right_knee_angle < 195:
 
       # Check if the other leg is bended at the required angle.
-      if left_knee_angle > 315 and left_knee_angle < 335 or right_knee_angle > 25 and right_knee_angle < 45:
+      #if left_knee_angle > 315 and left_knee_angle < 335 or right_knee_angle > 25 and right_knee_angle < 45:
         # Specify the label of the pose that is tree pose.
-        label = 'Tree Pose'
+        #label = 'Tree Pose'
 
     # ----------------------------------------------------------------------------------------------------------------
 

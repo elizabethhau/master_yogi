@@ -1,0 +1,5 @@
+flask==2.1.1
+opencv-python==4.5.5.64
+mediapipe==0.8.9.1
+matplotlib==3.5.1
+
