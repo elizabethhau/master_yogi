@@ -1,9 +1,48 @@
 <html>
   <head>
     <title>Master Yogi</title>
+      <!-- Use Bootstrap -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
-    <h1>Pose Detection using OpenCV</h1>
-    <img id="camera_feed" src="{{ url_for('video_feed') }}" />
+  <script src="/static/js/index.js"></script>
+  <script src="/static/css/style.css"></script>
+
+<!--     <h1 class="display-2" style="padding-left: 20px">Master Yogi</h1>-->
+    <h1 class="display-5" style="text-align: center">Welcome to Master Yogi, your yoga coach for the day</h1>
+      <div class="row">
+      <div class="col" style="padding-left: 2rem">
+          <div class="p-3 my-5 border">
+              <h1 class="display-6">Instructions</h1>
+              <ol>
+                  <li>Choose from the following poses and let the system know which pose you've chosen by <strong>saying the name of the pose</strong>
+                      <ul>
+                          <li>Tree Pose</li>
+                          <li>Warrior 2</li>
+                          <li>Plank</li>
+                      </ul>
+                  </li>
+                  <li>The system will show you a photo of the pose</li>
+                  <li><strong>Facing the camera</strong>, try to do the pose, what you do will be picked up by the system</li>
+                  <li>The system will <strong>provide feedback on adjustments you can make</strong> if necessary</li>
+                  <li>Try to make adjustments based on the system's recommendation</li>
+                  <li>If you cannot or don't want to make the adjustments the system is recommending, <strong>feel free to say "no"</strong></li>
+                  <li>To start over, <strong>say "restart" or refresh the page</strong></li>
+              </ol>
+          </div><!-- close border-->
+      </div> <!-- close col-->
+        <div class="col" style="padding-top: 3rem">
+<!--            <div class="p-5 my-5">-->
+                <h1 class="display-6" id="pose_text"></h1>
+                <img id="pose_pic" width="400" src=""/>
+<!--            </div>-->
+        </div> <!-- close col -->
+      <div class="col">
+          <img id="camera_feed" src="{{ url_for('video_feed') }}"  width="850" style="padding-top: 3rem; padding-right: 2rem"/>
+      </div> <!-- close col 3-->
+    </div> <!-- close row -->
   </body>
 </html>
