@@ -3,6 +3,7 @@ from camera import VideoCamera
 # import main
 
 app = Flask(__name__)
+app._static_folder = os.path.abspath("templates/static/")
 
 @app.route('/')
 def index():
