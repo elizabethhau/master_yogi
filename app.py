@@ -11,8 +11,11 @@ def index():
   return render_template('index.html')
 
 def generate(camera):
+  counter = 0
+  current_label = 'Unknown Pose'
   while True:
-    frame = camera.get_frame()
+    frame, current_label = camera.get_frame(counter, current_label)
+    counter+=1
     yield(b'--frame\n'
     b'Content-Type: image/jpeng\n\n' + frame + b'\n\n')
 

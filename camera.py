@@ -4,6 +4,9 @@ import math
 import numpy as np
 from time import time
 import matplotlib.pyplot as plt
+import pandas as pd
+
+
 
 
 class VideoCamera(object):
@@ -17,6 +20,7 @@ class VideoCamera(object):
     self.mp_drawing = mp.solutions.drawing_utils
     # Set up pose function for video
     self.pose_video = self.mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5, model_complexity=1)
+
 
   def __del__(self):
     self.video.release()
@@ -108,7 +112,7 @@ class VideoCamera(object):
       angle += 360
     return angle
 
-  def classify_pose(self, landmarks, output_image, display=False):
+  def coach_pose(self, landmarks, output_image, counter, display=False, pose='plank'):
     '''
 				This function classifies yoga poses depending upon the angles of various body joints.
 				Args:
@@ -122,7 +126,21 @@ class VideoCamera(object):
 
 				'''
     # Initializing the label of the pose. It is not known at this stage.
-    label = 'Unknown Pose'
+    label = str('Unknown Pose')
+
+    # If it is the first iteration based on the counter ... then upload the database of poses and just return the frame, unkown pose etc.
+    # I feel like we
+    if counter == 0:
+      global database
+      database = pd.read_csv(r"C:\Users\andre\Documents\github\master_yogi\yoga_poses_csvs_out_AnglesExtracted.csv")
+      correction_message = str('Let us do yoga') #+ str(pose) ##so this would be a message that kicks it off only works if we reset the counter every time the user says a new pose
+      ##testing pose filter to confirm it works ... print(database[database['Pose']==pose])
+
+      return output_image, label, correction_message
+
+    ##Now the data base is uploaded into the app ... filter on pose and feature
+    ##Example query database[database['Pose'] == pose] ... where pose is fed in by user, need to convert to one word lower case ie. downdog, plank
+
 
     # Specify the color (Red) with which the label will be written on the image
     color = (0, 0, 255)
@@ -131,47 +149,100 @@ class VideoCamera(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     # Get the angle between the left shoulder, elbow and wrist points.
-    left_elbow_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_SHOULDER.value],
+    Left_Elbow_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_SHOULDER.value],
                                             landmarks[self.mp_pose.PoseLandmark.LEFT_ELBOW.value],
                                             landmarks[self.mp_pose.PoseLandmark.LEFT_WRIST.value])
 
     # Get the angle between the right shoulder, elbow and wrist points.
-    right_elbow_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_SHOULDER.value],
+    Right_Elbow_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_SHOULDER.value],
                                              landmarks[self.mp_pose.PoseLandmark.RIGHT_ELBOW.value],
                                              landmarks[self.mp_pose.PoseLandmark.RIGHT_WRIST.value])
     # Get the angle between the left elbow, shoulder and hip points.
-    left_shoulder_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_ELBOW.value],
+    Left_Shoulder_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_ELBOW.value],
                                                landmarks[self.mp_pose.PoseLandmark.LEFT_SHOULDER.value],
                                                landmarks[self.mp_pose.PoseLandmark.LEFT_HIP.value])
 
     # Get the angle between the right hip, shoulder and elbow points.
-    right_shoulder_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value],
+    Right_Shoulder_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value],
                                                 landmarks[self.mp_pose.PoseLandmark.RIGHT_SHOULDER.value],
                                                 landmarks[self.mp_pose.PoseLandmark.RIGHT_ELBOW.value])
 
     # Get the angle between the left hip, knee and ankle points.
-    left_knee_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_HIP.value],
+    Left_Knee_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.LEFT_HIP.value],
                                            landmarks[self.mp_pose.PoseLandmark.LEFT_KNEE.value],
                                            landmarks[self.mp_pose.PoseLandmark.LEFT_ANKLE.value])
 
     # Get the angle between the right hip, knee and ankle points
-    right_knee_angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value],
+    Right_Knee_Angle = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value],
                                             landmarks[self.mp_pose.PoseLandmark.RIGHT_KNEE.value],
                                             landmarks[self.mp_pose.PoseLandmark.RIGHT_ANKLE.value])
 
-    # ----------------------------------------------------------------------------------------------------------------
-    ##T-Pose to start...
+    Torso_Alignment = self.calculate_angle(landmarks[self.mp_pose.PoseLandmark.RIGHT_SHOULDER.value],
+                                            landmarks[self.mp_pose.PoseLandmark.RIGHT_HIP.value],
+                                            landmarks[self.mp_pose.PoseLandmark.RIGHT_ANKLE.value])
 
-    ##check arms firsts
-    if left_elbow_angle < 165 or left_elbow_angle > 195:
-      print('Extend your left arm straight')
+    current_pose = pd.Series([Left_Elbow_Angle, Right_Elbow_Angle, Left_Shoulder_Angle, Right_Shoulder_Angle, Left_Knee_Angle, Right_Knee_Angle,
+                              Torso_Alignment], index = ['Left Elbow Angle', 'Right Elbow Angle', 'Left Shoulder Angle', 'Right Shoulder Angle', 'Left Knee Angle',
+                                                         'Right Knee Angle', 'Torso Alignment'])
+    # ---------------------------------------------------------------------------------------------------------------- #
+    ##Get the representative pose angles from our database ...
+    pose_examples = database[database['Pose'] == pose]
+    ##Get the standard deviation of each feature ...
+    stdevs = pose_examples.std().sort_values() ##this sorts the features based off std.
+    avg_features = pose_examples.mean()
 
-      print('Can you do that?')
 
-    if right_elbow_angle < 165 or right_elbow_angle > 195:
-      print('Extend your right arm straight')
 
-      print('Can you do that?') ##could we get the system to wait for a response here from the user?
+    for item in stdevs.iteritems():
+      ##check each feature prioritized by standard deviation of the feature, low standard deviation means important to the pose
+      print(item)
+
+      ##figure out which feature it is
+      feature = item[0]
+      target_dev = item[1]
+      print(feature)
+
+      ##check that feature against the realtime pose
+      if current_pose[feature] < avg_features[feature] - 0.5 * target_dev:
+        if feature == 'Torso Alginment':
+          print('Align your torso')
+          correction_message = 'Align your torso'
+          return output_image, label, correction_message
+        if feature == 'Left Elbow Angle':
+          print('Straighten Your Left Arm')
+          correction_message = 'Straighten Your Left Arm'
+          return output_image, label, correction_message
+        if feature == 'Right Elbow Angle':
+          print('Straighten Your Right Arm')
+          correction_message = 'Straighten Your Right Arm'
+          return output_image, label, correction_message
+        if feature == 'Left Shoulder Angle':
+          print('Increase the distance between your left arm and torso')
+          correction_message = 'Increase the distance between your left arm and torso'
+          return output_image, label, correction_message
+        if feature == 'Right Shoulder Angle':
+          print('Increase the distance between your right arm and torso')
+          correction_message = 'Increase the distance between your right arm and torso'
+          return output_image, label, correction_message
+        if feature == 'Right Knee Angle':
+          print('Increase your Right knee angle')
+          correction_message = 'Increase your Right knee angle'
+          return output_image, label, correction_message
+      elif
+      else:
+        label = str('tpose')
+
+
+
+
+
+
+
+
+    #if right_elbow_angle < 165 or right_elbow_angle > 195:
+      #print('Extend your right arm straight')
+
+      #print('Can you do that?') ##could we get the system to wait for a response here from the user?
 
 
     ##Original Implementation ....
@@ -227,24 +298,16 @@ class VideoCamera(object):
       color = (0, 255, 0)
 
     # Write the label on the output image.
-    cv2.putText(output_image, label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
+      cv2.putText(output_image, label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
 
-    # Check if the resultant image is specified to be displayed.
-    if display:
-
-      # Display the resultant image.
-      plt.figure(figsize=[10, 10])
-      plt.imshow(output_image[:, :, ::-1]);
-      plt.title("Output Image");
-      plt.axis('off');
-
-    else:
+      success_message = 'Good job on this pose'
 
       # Return the output image and the classified label.
-      return output_image, label
+      return output_image, label, success_message
 
-  def get_frame(self):
+  def get_frame(self, counter, current_label):
     ok, frame = self.video.read()
+
 
     # flip the frame horizontally for natural (selfie-view) visualization
     frame = cv2.flip(frame, 1)
@@ -260,11 +323,28 @@ class VideoCamera(object):
 
     # chck if landmarks are detected
     if landmarks:
-      # perform the pose classification
-      frame, _ = self.classify_pose(landmarks, frame, display=False)
+      # Look at the posture and provide coaching feedback.
 
-    #Display the frame
-    # cv2.imshow('Pose Classification', frame)
+      ##I think this is where we can change the sampling rate with a counter ... we only classify and coach every XX iterations
+      ##How can I get the goal pose here...need to get this from the JS to know what the user is trying to do and then coach the pose...
+
+      if counter % 50 == 0:  ##we can change the sampling rate for coaching without interupting the video feed.
+        #print(counter)
+
+          ##send request from python to java script ... asking for user input
+
+        frame, current_label, message_to_user = self.coach_pose(landmarks, frame, counter=counter, display=False, pose='plank') ##need to get the pose the user is saying here
+        print(message_to_user)
+
+          ##send a request JS to output message to the user ...
+
+    #Write the label on the frame and pass it back
+    if current_label != 'Unknown Pose':
+      frame = cv2.putText(frame, current_label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+    else:
+      frame = cv2.putText(frame, current_label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+
+
     ok, jpeg = cv2.imencode('.jpg', frame)
 
-    return jpeg.tobytes()
+    return jpeg.tobytes(), current_label
