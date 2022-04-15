@@ -16,7 +16,7 @@ Alternatively, you can manually install the versions in your virtual environment
 3. `pip install matplotlib==3.5.1`
 4. `pip install flask==2.1.1`
 
-## Running App
+## Usage
 Run the application using the command `python app.py` in the directory where `app.py` lives. 
 
 Then, open local host on your favorite browser: `http://0.0.0.0:8000/`. Follow the instructions on the UI and have fun! :) 
@@ -26,3 +26,9 @@ You may encounter some errors, so we've compiled a list of resolutions here:
 
 1. Microphone/camera is not working on Google Chrome for unsecure origins
 Follow the instructions here: https://medium.com/@Carmichaelize/enabling-the-microphone-camera-in-chrome-for-local-unsecure-origins-9c90c3149339
+
+## Authors
+LGO 22s Elizabeth Hau, Andrew Tindall, and Sravani Yajamanam Kidambi.
+
+## References
+- [Real-Time 3D Pose Detection and Classification](https://bleedai.com/introduction-to-pose-detection-and-basic-pose-classification/)
