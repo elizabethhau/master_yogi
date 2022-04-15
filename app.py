@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 # import main
+import os
 
 app = Flask(__name__)
 app._static_folder = os.path.abspath("templates/static/")
