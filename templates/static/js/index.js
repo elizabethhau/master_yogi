@@ -1,28 +1,39 @@
 
 function loadPoseImage(poseString) {
-    var displayString = "Pose: ";
-    var imgSrc = "/static/images/";
+    console.log('in load pose image')
+    console.log(poseString)
+    let displayString = "Pose: ";
+    let imgSrc = "/static/images/";
+    let result = false;
+    poseString = poseString.toLowerCase();
 
-    if (poseString.toLowerCase().includes('tree')) {
+    if (poseString.includes('tree')) {
         displayString += "Tree"
         imgSrc += "tree-pose.jpeg";
+        result = true;
     }
 
-    if (poseString.toLowerCase().includes('warrior two')) {
+    if (poseString.includes('warrior')) {
         displayString += "Warrior 2"
         imgSrc += "warrior-2.jpeg";
+        result = true;
     }
 
-    if (poseString.toLowerCase().includes('plank')) {
+    if (poseString.includes('plank') || poseString.includes('play')) {
         displayString += "Plank"
         imgSrc += "plank.jpeg";
+        result = true;
     }
-    document.getElementById("pose_text").innerText = displayString;
-    document.getElementById("pose_pic").src = imgSrc;
+    if (result) {
+        document.getElementById("pose_text").innerText = displayString;
+        document.getElementById("pose_pic").src = imgSrc;
+        document.getElementById("pose_pic").style.display = "inline";
+    }
+    return result
 }
 
 // only call losePoseImage once the page is fully loaded
-$(function() {
-    console.log( "ready!" );
-    loadPoseImage('plank');
-});
+// $(function() {
+//     console.log( "page is ready!" );
+    // loadPoseImage('plank');
+// });
