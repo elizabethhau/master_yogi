@@ -1,10 +1,15 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request, jsonify
+from flask_cors import CORS
 from camera import VideoCamera
 # import main
 import os
 
+# Set up Flask
 app = Flask(__name__)
 app._static_folder = os.path.abspath("templates/static/")
+
+# Set up Flask to bypass CORS at the front end
+cors = CORS(app)
 
 @app.route('/')
 def index():
@@ -35,5 +40,13 @@ def video_feed():
 #     ok, jpeg = cv2.imencode('.jpg', frame)
 #     return jpeg.tobytes()
 
+# Create the receiver API POST endpoint
+@app.route('/receiver', methods=['POST'])
+def postME():
+    data = request.get_json()
+    data = jsonify(data)
+    return data
+
+# Run the application
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port='8000', debug=True)
+  app.run(host='127.0.0.1', port='8000', debug=True)

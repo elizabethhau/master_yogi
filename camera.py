@@ -6,9 +6,6 @@ from time import time
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
-
-
 class VideoCamera(object):
   def __init__(self) -> None:
     self.video = cv2.VideoCapture(0)
@@ -132,7 +129,7 @@ class VideoCamera(object):
     # I feel like we
     if counter == 0:
       global database
-      database = pd.read_csv(r"C:\Users\andre\Documents\github\master_yogi\yoga_poses_csvs_out_AnglesExtracted.csv")
+      database = pd.read_csv(r"yoga_poses_csvs_out_AnglesExtracted.csv")
       correction_message = str('Let us do yoga') #+ str(pose) ##so this would be a message that kicks it off only works if we reset the counter every time the user says a new pose
       ##testing pose filter to confirm it works ... print(database[database['Pose']==pose])
 
@@ -228,7 +225,7 @@ class VideoCamera(object):
           print('Increase your Right knee angle')
           correction_message = 'Increase your Right knee angle'
           return output_image, label, correction_message
-      elif
+      #elif
       else:
         label = str('tpose')
 
