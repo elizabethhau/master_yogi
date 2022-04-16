@@ -5,6 +5,7 @@ import numpy as np
 from time import time
 import matplotlib.pyplot as plt
 import pandas as pd
+import json # For communicating between Python and Javascript/HTML
 
 class VideoCamera(object):
   def __init__(self) -> None:
@@ -332,8 +333,13 @@ class VideoCamera(object):
 
         frame, current_label, message_to_user = self.coach_pose(landmarks, frame, counter=counter, display=False, pose='plank') ##need to get the pose the user is saying here
         print(message_to_user)
+        ##send a request JS to output message to the user ...
 
-          ##send a request JS to output message to the user ...
+        # Create JSON object that contains message to user
+        jsonobj = json.dumps(message_to_user)
+        # Store message into a JSON string object and write into coach.js file
+        # This will be called in index.html later
+        print("var jsonstr = '{}' ".format(jsonobj), file=open('coach.js', 'w'))
 
     #Write the label on the frame and pass it back
     if current_label != 'Unknown Pose':

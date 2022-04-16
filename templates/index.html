@@ -54,5 +54,14 @@
           <img id="camera_feed" src="{{ url_for('video_feed') }}"  width="850" style="padding-top: 3rem; padding-right: 2rem"/>
       </div> <!-- close col 3-->
     </div> <!-- close row -->
+
+    <h1>Coach Feedback</h1>
+    <!-- TO DO: NEED TO CALL COACH.JS FROM A DIRECTORY ABOVE -->
+    <script type="text/javascript" src="coach.js"></script>
+    <script>
+        var json4real = JSON.parse(jsonstr);
+        document.write('Please try to ', json4real)
+    </script>
+
   </body>
 </html>

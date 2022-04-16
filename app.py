@@ -40,6 +40,28 @@ def video_feed():
 #     ok, jpeg = cv2.imencode('.jpg', frame)
 #     return jpeg.tobytes()
 
+# ## TESTING PURPOSES ONLY
+# import numpy as np
+#
+# matrix = np.arange(36.).reshape((6, 6))
+# rows, cols = matrix.shape
+# #print(matrix)
+# dictionary = [ {'x': j, 'y': i, 'value': matrix[j, i]} for j in range(rows) for i in range(cols) ]
+# #print(dictionary)
+#
+# import json
+# import sys
+#
+# #sys.stdout = open('declare.js', 'w') # Write 'w' output with the data into declare.js file
+# #print(dictionary, file=open('declare.js', 'w'))
+#
+# # turn dictionary into json object
+# jsonobj = json.dumps(dictionary)
+#
+# print("var jsonstr = '{}' ".format(jsonobj), file=open('declare.js', 'w'))
+#
+# ###############################
+
 # Create the receiver API POST endpoint
 @app.route('/receiver', methods=['POST'])
 def postME():
