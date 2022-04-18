@@ -26,7 +26,7 @@
               <ol>
                   <li>Choose from the following poses and let the system know which pose you've chosen by <strong>saying the name of the pose</strong>
                       <ul>
-                          <li>Tree Pose</li>
+<!--                          <li>Tree Pose</li>-->
                           <li>Warrior 2</li>
                           <li>Plank</li>
                       </ul>
@@ -35,18 +35,21 @@
                   <li>Try to perform the pose such that the camera captures your body at a similar angle as the picture, what you do will be picked up by the system</li>
                   <li>The system will <strong>provide feedback on adjustments you can make</strong> if necessary</li>
                   <li>Try to make adjustments based on the system's recommendation</li>
-                  <li>If you cannot or don't want to make the adjustments the system is recommending, <strong>feel free to say "no"</strong></li>
-                  <li>To start over, <strong>say "restart" or refresh the page</strong></li>
+                  <li>To check your pose, say something along the lines of <strong>"check plank"</strong> or <strong>"check warrior"</strong></li>
+<!--                  <li>If you cannot or don't want to make the adjustments the system is recommending, <strong>feel free to say "no"</strong></li>-->
+<!--                  <li>To start over, <strong>say "restart" or refresh the page</strong></li>-->
               </ol>
           </div><!-- close border-->
           <div>
               <h4>Speech Recognition:</h4>
               <p id="speech">System Ready: listening for command...</p>
+              <h4>Coach Feedback: </h4>
+              <p id="feedback"></p>
           </div>
       </div> <!-- close col-->
         <div class="col" style="padding-top: 3rem">
 <!--            <div class="p-5 my-5">-->
-                <h1 class="display-6" id="pose_text">Choose one of the available poses by saying the name of the pose: tree, warrior 2, plank</h1>
+                <h1 class="display-6" id="pose_text">Choose one of the available poses by saying the name of the pose: warrior 2, plank</h1>
                 <img id="pose_pic" width="400" src="" alt="waiting for command to load image" style="display: none"/>
 <!--            </div>-->
         </div> <!-- close col -->
@@ -55,13 +58,13 @@
       </div> <!-- close col 3-->
     </div> <!-- close row -->
 
-    <h1>Coach Feedback</h1>
+<!--    <h1>Coach Feedback</h1>-->
     <!-- TO DO: NEED TO CALL COACH.JS FROM A DIRECTORY ABOVE -->
-    <script type="text/javascript" src="coach.js"></script>
-    <script>
-        var json4real = JSON.parse(jsonstr);
-        document.write('Please try to ', json4real)
-    </script>
+<!--    <script type="text/javascript" src="coach.js"></script>-->
+<!--    <script>-->
+<!--        var json4real = JSON.parse(jsonstr);-->
+<!--        document.write('Please try to ', json4real)-->
+<!--    </script>-->
 
   </body>
 </html>

@@ -47,8 +47,10 @@ function loadPoseImage(poseString) {
                     alert('something went wrong')
                 })
             .then(jsonResponse => {
+                    let message = jsonResponse.message
                     generateSpeech(jsonResponse.message)
-                    console.log(jsonResponse)
+                    document.getElementById("feedback").innerText = message;
+                    console.log(message)
                 })
             .catch(err => console.error(err))
     }
