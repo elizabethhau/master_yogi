@@ -11,6 +11,9 @@ app._static_folder = os.path.abspath("templates/static/")
 # Set up Flask to bypass CORS at the front end
 cors = CORS(app)
 
+# keep track of the pose the user said
+pose = None
+
 @app.route('/')
 def index():
   return render_template('index.html')
@@ -19,7 +22,7 @@ def generate(camera):
   counter = 0
   current_label = 'Unknown Pose'
   while True:
-    frame, current_label = camera.get_frame(counter, current_label)
+    frame, current_label = camera.get_frame(counter, current_label, pose)
     counter+=1
     yield(b'--frame\n'
     b'Content-Type: image/jpeng\n\n' + frame + b'\n\n')
@@ -27,6 +30,18 @@ def generate(camera):
 @app.route('/video_feed')
 def video_feed():
   return Response(generate(VideoCamera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/coach', methods=["POST"])
+def coach():
+  data = request.get_json()
+  global pose
+  pose = data['pose'].lower()
+  print(pose)
+  # TODO: call coach given pose and expect the message back
+  # message = coach(pose, frame)
+  messages = {'plank': 'keep your back straight', 'tree': 'make sure your foot is not on your knee', 'warrior': 'generic feedback for warrior 2'}
+
+  return jsonify({'message': 'Lift your left arm'}) # hard coded for now, replace 'Lift your left arm' with the actual message for the user
 
 # class VideoCamera(object):
 #   def __init__(self) -> None:

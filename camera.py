@@ -303,9 +303,8 @@ class VideoCamera(object):
       # Return the output image and the classified label.
       return output_image, label, success_message
 
-  def get_frame(self, counter, current_label):
+  def get_frame(self, counter, current_label, pose=None):
     ok, frame = self.video.read()
-
 
     # flip the frame horizontally for natural (selfie-view) visualization
     frame = cv2.flip(frame, 1)
