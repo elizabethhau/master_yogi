@@ -14,7 +14,7 @@ function loadPoseImage(poseString) {
     }
 
     if (poseString.includes('warrior')) {
-        displayString += "Warrior 2"
+        displayString += "Warrior2"
         imgSrc += "warrior-2.jpeg";
         result = true;
     }

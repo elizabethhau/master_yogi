@@ -201,7 +201,7 @@ class VideoCamera(object):
 
     for item in stdevs.iteritems():
       ##check each feature prioritized by standard deviation of the feature, low standard deviation means important to the pose
-      print(item)
+      #print(item)
 
       ##figure out which feature it is
       feature = item[0]
@@ -211,15 +211,15 @@ class VideoCamera(object):
       ##check that feature against the realtime pose
       if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
         if feature == 'Torso Alginment':
-          print('Align your torso')
+          #print('Align your torso')
           correction_message = 'Align your torso'
           return output_image, label, correction_message
         if feature == 'Left Elbow Angle':
-          print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
+          #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
           correction_message = 'Straighten Your Right Arm'
           return output_image, label, correction_message
         if feature == 'Right Elbow Angle':
-          print('Straighten Your Left Arm')
+          #print('Straighten Your Left Arm')
           correction_message = 'Straighten Your Left Arm'
           return output_image, label, correction_message
         if feature == 'Left Shoulder Angle':
@@ -227,11 +227,11 @@ class VideoCamera(object):
           correction_message = 'Increase the distance between your right arm and torso'
           return output_image, label, correction_message
         if feature == 'Right Shoulder Angle':
-          print('Increase the distance between your left arm and torso')
+          #print('Increase the distance between your left arm and torso')
           correction_message = 'Increase the distance between your left arm and torso'
           return output_image, label, correction_message
         if feature == 'Right Knee Angle':
-          print('Straighten your left leg')
+          #print('Straighten your left leg')
           correction_message = 'Straighten your left leg'
           return output_image, label, correction_message
 
@@ -341,8 +341,10 @@ class VideoCamera(object):
           ##send request from python to java script ... asking for user input
 
         frame, current_label, message_to_user = self.coach_pose(landmarks, frame, database, counter=counter, display=False, pose=pose) ##need to get the pose the user is saying here
-        print(message_to_user)
+        #print(message_to_user)
         ##send a request JS to output message to the user ...
+
+
 
 
     #Write the label on the frame and pass it back
@@ -354,4 +356,6 @@ class VideoCamera(object):
 
     ok, jpeg = cv2.imencode('.jpg', frame)
 
+
     return jpeg.tobytes(), current_label, message_to_user
+
