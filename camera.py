@@ -110,7 +110,7 @@ class VideoCamera(object):
       angle += 360
     return angle
 
-  def coach_pose(self, landmarks, output_image, counter, display=False, pose='plank'):
+  def coach_pose(self, landmarks, output_image, database, counter, display=False, pose='plank'):
     '''
 				This function classifies yoga poses depending upon the angles of various body joints.
 				Args:
@@ -128,13 +128,13 @@ class VideoCamera(object):
 
     # If it is the first iteration based on the counter ... then upload the database of poses and just return the frame, unkown pose etc.
     # I feel like we
-    if counter == 0:
-      global database
-      database = pd.read_csv(r"yoga_poses_csvs_out_AnglesExtracted.csv")
-      correction_message = str('Let us do yoga') #+ str(pose) ##so this would be a message that kicks it off only works if we reset the counter every time the user says a new pose
+    #if counter == 0:
+      #global database
+      #database = pd.read_csv(r"yoga_poses_csvs_out_AnglesExtracted.csv")
+      #correction_message = str('Let us do yoga') #+ str(pose) ##so this would be a message that kicks it off only works if we reset the counter every time the user says a new pose
       ##testing pose filter to confirm it works ... print(database[database['Pose']==pose])
 
-      return output_image, label, correction_message
+      #return output_image, label, correction_message
 
     ##Now the data base is uploaded into the app ... filter on pose and feature
     ##Example query database[database['Pose'] == pose] ... where pose is fed in by user, need to convert to one word lower case ie. downdog, plank
@@ -185,9 +185,17 @@ class VideoCamera(object):
     # ---------------------------------------------------------------------------------------------------------------- #
     ##Get the representative pose angles from our database ...
     pose_examples = database[database['Pose'] == pose]
+    #print(pose_examples)
     ##Get the standard deviation of each feature ...
+
+    ##drop the non-numeric columns to prevent a type erro
+    pose_examples = pose_examples.drop('Image_Name', axis=1)
+    pose_examples = pose_examples.drop('Pose', axis=1)
+
     stdevs = pose_examples.std().sort_values() ##this sorts the features based off std.
+    #print(stdevs)
     avg_features = pose_examples.mean()
+    #print(avg_features)
 
 
 
@@ -198,37 +206,37 @@ class VideoCamera(object):
       ##figure out which feature it is
       feature = item[0]
       target_dev = item[1]
-      print(feature)
+      #print(feature)
 
       ##check that feature against the realtime pose
-      if current_pose[feature] < avg_features[feature] - 0.5 * target_dev:
+      if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
         if feature == 'Torso Alginment':
           print('Align your torso')
           correction_message = 'Align your torso'
           return output_image, label, correction_message
         if feature == 'Left Elbow Angle':
+          print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
+          correction_message = 'Straighten Your Right Arm'
+          return output_image, label, correction_message
+        if feature == 'Right Elbow Angle':
           print('Straighten Your Left Arm')
           correction_message = 'Straighten Your Left Arm'
           return output_image, label, correction_message
-        if feature == 'Right Elbow Angle':
-          print('Straighten Your Right Arm')
-          correction_message = 'Straighten Your Right Arm'
-          return output_image, label, correction_message
         if feature == 'Left Shoulder Angle':
-          print('Increase the distance between your left arm and torso')
-          correction_message = 'Increase the distance between your left arm and torso'
-          return output_image, label, correction_message
-        if feature == 'Right Shoulder Angle':
           print('Increase the distance between your right arm and torso')
           correction_message = 'Increase the distance between your right arm and torso'
           return output_image, label, correction_message
-        if feature == 'Right Knee Angle':
-          print('Increase your Right knee angle')
-          correction_message = 'Increase your Right knee angle'
+        if feature == 'Right Shoulder Angle':
+          print('Increase the distance between your left arm and torso')
+          correction_message = 'Increase the distance between your left arm and torso'
           return output_image, label, correction_message
-      #elif
-      else:
-        label = str('tpose')
+        if feature == 'Right Knee Angle':
+          print('Straighten your left leg')
+          correction_message = 'Straighten your left leg'
+          return output_image, label, correction_message
+
+
+    label = str(pose)
 
 
 
@@ -291,20 +299,22 @@ class VideoCamera(object):
     # ----------------------------------------------------------------------------------------------------------------
 
     # Check if the pose is classified successfully
-    if label != 'Unknown Pose':
+    #if label != str('Unknown Pose'):
       # Update the color (to green) with which the label will be written on the image.
-      color = (0, 255, 0)
+    color = (0, 255, 0)
 
     # Write the label on the output image.
-      cv2.putText(output_image, label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
+    cv2.putText(output_image, label, (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, color, 2)
 
-      success_message = 'Good job on this pose'
+    success_message = str('Good job on this pose')
 
-      # Return the output image and the classified label.
-      return output_image, label, success_message
+    # Return the output image and the classified label.
+    return output_image, label, success_message
 
-  def get_frame(self, counter, current_label, pose=None):
+  def get_frame(self, counter, current_label, database, pose=None):
     ok, frame = self.video.read()
+
+    message_to_user = None
 
     # flip the frame horizontally for natural (selfie-view) visualization
     frame = cv2.flip(frame, 1)
@@ -325,20 +335,15 @@ class VideoCamera(object):
       ##I think this is where we can change the sampling rate with a counter ... we only classify and coach every XX iterations
       ##How can I get the goal pose here...need to get this from the JS to know what the user is trying to do and then coach the pose...
 
-      if counter % 50 == 0:  ##we can change the sampling rate for coaching without interupting the video feed.
+      if counter % 50 == 0 and pose != None:  ##we can change the sampling rate for coaching without interupting the video feed.
         #print(counter)
 
           ##send request from python to java script ... asking for user input
 
-        frame, current_label, message_to_user = self.coach_pose(landmarks, frame, counter=counter, display=False, pose='plank') ##need to get the pose the user is saying here
+        frame, current_label, message_to_user = self.coach_pose(landmarks, frame, database, counter=counter, display=False, pose=pose) ##need to get the pose the user is saying here
         print(message_to_user)
         ##send a request JS to output message to the user ...
 
-        # Create JSON object that contains message to user
-        jsonobj = json.dumps(message_to_user)
-        # Store message into a JSON string object and write into coach.js file
-        # This will be called in index.html later
-        print("var jsonstr = '{}' ".format(jsonobj), file=open('coach.js', 'w'))
 
     #Write the label on the frame and pass it back
     if current_label != 'Unknown Pose':
@@ -349,4 +354,4 @@ class VideoCamera(object):
 
     ok, jpeg = cv2.imencode('.jpg', frame)
 
-    return jpeg.tobytes(), current_label
+    return jpeg.tobytes(), current_label, message_to_user

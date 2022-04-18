@@ -1,1 +1,1 @@
-var jsonstr = '"Straighten Your Right Arm"' 
+var jsonstr = '"Straighten your left leg"' 
