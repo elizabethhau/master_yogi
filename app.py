@@ -54,7 +54,7 @@ async def coach():
   global pose
   global message_to_user
 
-  pose = data['pose'].lower().split(':')[1].strip()
+  pose = data['pose'].lower()
   #working = pose.split(':')
   print(pose)
   await asyncio.sleep(2)
