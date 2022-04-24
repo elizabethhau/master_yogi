@@ -8,7 +8,11 @@
 //    transcript, a string of possibly multiple words that were recognized
 // Output:
 //    processed, a boolean indicating whether the system reacted to the speech or not
+
+
 const processSpeech = function (transcript) {
+  // console.log('check mode is');
+  // console.log(inCheckMode);
   // console.log('in process speech')
   // console.log('transcript is')
   // console.log(transcript)
@@ -22,10 +26,11 @@ const processSpeech = function (transcript) {
   };
 
   var processed = false;
+  if (!hasLoadedPose) {
+    processed = loadPoseImage(transcript);
+  }
 
-  processed = loadPoseImage(transcript);
-
-  return false;
+  return processed;
 };
 
 let debouncedProcessSpeech = _.debounce(processSpeech, 500);
@@ -46,14 +51,14 @@ recognition.onresult = function(event) {
 
   // if (DEBUGSPEECH) {
     if (hasFinal) {
-      console.log("SPEECH DEBUG: ready");
+      // console.log("SPEECH DEBUG: ready");
       document.getElementById('speech').innerText = "System ready: listening..."
     }
 
 
       // otherFeedback.setContent("SPEECH DEBUG: ready");
     else {
-      console.log("SPEECH DEBUG: " + transcript);
+      // console.log("SPEECH DEBUG: " + transcript);
       document.getElementById('speech').innerText = "You said: " + transcript;
     }
 
