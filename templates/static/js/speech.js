@@ -1,5 +1,14 @@
 // SPEECH SYNTHESIS SETUP
 let voicesReady = false;
+let voiceIndices = [0, 7, 11, 17, 28, 32, 37, 41, 40, 49, 50, 51]
+let coachIndex;
+let coach;
+
+$(function() {
+    console.log( "page is ready! selecting a coach for today" );
+    coachIndex = voiceIndices[Math.floor(Math.random()*voiceIndices.length)]
+    loadPoseImage('plank');
+});
 window.speechSynthesis.onvoiceschanged = function () {
   voicesReady = true;
   console.log('voices ready is true')
@@ -13,11 +22,12 @@ const generateSpeech = function (message, callback) {
   if (voicesReady) {
     console.log("VOICE IS READY");
     var msg = new SpeechSynthesisUtterance();
-    msg.voice = window.speechSynthesis.getVoices()[0];
+    msg.voice = window.speechSynthesis.getVoices()[coachIndex];
+    coach = window.speechSynthesis.getVoices()[coachIndex].name;
     // console.log(window.speechSynthesis.getVoices());
     msg.text = message;
     // msg.rate = 0.2;
-    msg.rate = 0.8;
+    msg.rate = 0.75;
     msg.volume = 1;
     // console.log(msg);
     if (typeof callback !== "undefined") {
