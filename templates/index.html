@@ -47,52 +47,49 @@
     </div>
 
 
-      <!-- <div class="row">
-      <div class="col" style="padding-left: 2rem">
-          <div class="p-3 my-5 border">
-              <h1 class="display-6">Instructions</h1>
-              <ol>
-                  <li>Choose from the following poses and let the system know which pose you've chosen by <strong>saying the name of the pose</strong>
-                      <ul>
-                          <li>Tree Pose</li>
-                          <li>Warrior 2</li>
-                          <li>Plank</li>
-                      </ul>
-                  </li>
-                  <li>The system will show you a photo of the pose</li>
-                  <li>Try to perform the pose such that the camera captures your body at a similar angle as the picture, what you do will be picked up by the system</li>
-                  <li>The system will <strong>provide feedback on adjustments you can make</strong> if necessary</li>
-                  <li>Try to make adjustments based on the system's recommendation</li>
-                  <li>To check your pose, say something along the lines of <strong>"check plank"</strong> or <strong>"check warrior"</strong></li>
-                  <li>To continue getting feedback, repeat step 5 until the coach says "good job"</li>
-                  <li>If you cannot or don't want to make the adjustments the system is recommending, <strong>feel free to say "no"</strong></li>
-                  <li>To start over, <strong>say "restart" or refresh the page</strong></li>
-              </ol>
-          </div> close border -->
+       <div class="row">
+<!--      <div class="col" style="padding-left: 2rem">-->
+<!--          <div class="p-3 my-5 border">-->
+<!--              <h1 class="display-6">Instructions</h1>-->
+<!--              <ol>-->
+<!--                  <li>Choose from the following poses and let the system know which pose you've chosen by <strong>saying the name of the pose</strong>-->
+<!--                      <ul>-->
+<!--                          <li>Tree Pose</li>-->
+<!--                          <li>Warrior 2</li>-->
+<!--                          <li>Plank</li>-->
+<!--                      </ul>-->
+<!--                  </li>-->
+<!--                  <li>The system will show you a photo of the pose</li>-->
+<!--                  <li>Try to perform the pose such that the camera captures your body at a similar angle as the picture, what you do will be picked up by the system</li>-->
+<!--                  <li>The system will <strong>provide feedback on adjustments you can make</strong> if necessary</li>-->
+<!--                  <li>Try to make adjustments based on the system's recommendation</li>-->
+<!--                  <li>To check your pose, say something along the lines of <strong>"check plank"</strong> or <strong>"check warrior"</strong></li>-->
+<!--                  <li>To continue getting feedback, repeat step 5 until the coach says "good job"</li>-->
+<!--                  <li>If you cannot or don't want to make the adjustments the system is recommending, <strong>feel free to say "no"</strong></li>-->
+<!--                  <li>To start over, <strong>say "restart" or refresh the page</strong></li>-->
+<!--              </ol>-->
+<!--          </div> &lt;!&ndash;close border &ndash;&gt;-->
 
-      <div class="row">
-        <div class="col" style="padding-left: 2rem">
-            <div>
-                <h4 style="font-family:Garamond; font-size:32px; color: #005555;font-weight: bold">SPEECH RECOGNITION</h4>
-                <p id="speech" style="font-family:Didot; font-size: 24px;">System Ready: listening for command...</p>
-                
-                <h4 style="font-family:Garamond; font-size:32px; color:  #005555;font-weight: bold">COACH'S FEEDBACK</h4>
-                <p id="feedback" style="font-family:Didot; font-size: 24px;">Waiting to get feedback...</p>
-            </div>
-        </div> <!-- close col-->
-      </div> 
+<!--        <div class="col" style="padding-left: 2rem">-->
+<!--            <div>-->
 
-      <div class="row">        
-        <div class="col" style="padding-top: 3rem">
+<!--            </div>-->
+<!--        </div> &lt;!&ndash; close col&ndash;&gt;-->
+<!--      </div> -->
+
+<!--      <div class="row">        -->
+        <div class="col" style="padding-top: 3rem; padding-left: 2rem">
 <!--            <div class="p-5 my-5">-->
-                <h1 class="display-6" id="pose_text" style="font-family:Didot; font-size: 32px;">Choose one of the available poses: warrior 2, plank, downward dog</h1>
+                <h1 class="display-6" id="pose_text" style="font-family:Didot; "><ul>Choose one of the available poses: <li>warrior 2</li><li>plank</li><li>downward dog</li></ul></h1>
                 <img id="pose_pic" width="650" src="" alt="waiting for command to load image" style="display: none"/>
+            <h2 style="font-family:Garamond;color: #005555;font-weight: bold">SPEECH RECOGNITION</h2>
+                <p id="speech" style="font-family:Didot; font-size: 24px;">System Ready: listening for command...</p>
+                <h2 style="font-family:Garamond; color:  #005555;font-weight: bold">COACH'S FEEDBACK</h2>
+                <p id="feedback" style="font-family:Didot; font-size: 24px;">Waiting to get feedback...</p>
 <!--            </div>-->
         </div> <!-- close col -->
-      </div>
-      
-      <div class="col">
-          <img id="camera_feed" src="{{ url_for('video_feed') }}"  width="1000" style="padding-top: 3rem; padding-right: 2rem; position: absolute; "/>
+      <div class="col" style="padding-right: 3rem">
+          <img id="camera_feed" src="{{ url_for('video_feed') }}"  width="1000" style="padding-top: 3rem;"/>
       </div> <!-- close col 3-->
     </div> <!-- close row -->
 
