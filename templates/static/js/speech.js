@@ -7,7 +7,6 @@ let coach;
 $(function() {
     console.log( "page is ready! selecting a coach for today" );
     coachIndex = voiceIndices[Math.floor(Math.random()*voiceIndices.length)]
-    loadPoseImage('plank');
 });
 window.speechSynthesis.onvoiceschanged = function () {
   voicesReady = true;
