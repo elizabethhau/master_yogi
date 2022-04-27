@@ -211,6 +211,7 @@ class VideoCamera(object):
       ##check that feature against the realtime pose...
       ##add if statement
       if user_level == 'advanced':
+        print("advanced!!")
 
         if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
           if feature == 'Torso Alginment':

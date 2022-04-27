@@ -54,23 +54,18 @@ function loadPoseImage(poseString) {
 }
 
 function set_level_function(level) {
-
     let result =false;
     let user_level;
     level_string = level.toLowerCase();
 
-    if (level_string.includes('advanced')) {
-
+    if (level_string.includes('advanced') || level_string.includes('advance')) {
         user_level = 'advanced';
         result = true;
-
     }
 
-    if (level_string.includes('beginner')) {
-
+    if (level_string.includes('beginner') || level_string.includes('begin')) {
         user_level = 'beginner';
         result = true;
-
     }
 
     let success = false;
