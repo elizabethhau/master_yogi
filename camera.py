@@ -110,7 +110,7 @@ class VideoCamera(object):
       angle += 360
     return angle
 
-  def coach_pose(self, landmarks, output_image, database, counter, display=False, pose='plank'):
+  def coach_pose(self, landmarks, output_image, database, counter, display=False, pose='plank', user_level='beginner'):
     '''
 				This function classifies yoga poses depending upon the angles of various body joints.
 				Args:
@@ -208,35 +208,68 @@ class VideoCamera(object):
       target_dev = item[1]
       #print(feature)
 
-      ##check that feature against the realtime pose
-      if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
-        if feature == 'Torso Alginment':
+      ##check that feature against the realtime pose...
+      ##add if statement
+      if user_level == 'advanced':
+
+        if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
+          if feature == 'Torso Alginment':
           #print('Align your torso')
-          correction_message = 'Align your torso'
-          return output_image, label, correction_message
-        if feature == 'Left Elbow Angle':
-          #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
-          correction_message = 'Straighten Your Right Arm'
-          return output_image, label, correction_message
-        if feature == 'Right Elbow Angle':
-          #print('Straighten Your Left Arm')
-          correction_message = 'Straighten Your Left Arm'
-          return output_image, label, correction_message
-        if feature == 'Left Shoulder Angle':
-          print('Increase the distance between your right arm and torso')
-          correction_message = 'Increase the distance between your right arm and torso'
-          return output_image, label, correction_message
-        if feature == 'Right Shoulder Angle':
-          #print('Increase the distance between your left arm and torso')
-          correction_message = 'Increase the distance between your left arm and torso'
-          return output_image, label, correction_message
-        if feature == 'Right Knee Angle':
-          #print('Straighten your left leg')
-          correction_message = 'Straighten your left leg'
-          return output_image, label, correction_message
+            correction_message = 'Align your torso'
+            return output_image, label, correction_message
+          if feature == 'Left Elbow Angle':
+            #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
+            correction_message = 'Straighten Your Right Arm'
+            return output_image, label, correction_message
+          if feature == 'Right Elbow Angle':
+            #print('Straighten Your Left Arm')
+            correction_message = 'Straighten Your Left Arm'
+            return output_image, label, correction_message
+          if feature == 'Left Shoulder Angle':
+            print('Increase the distance between your right arm and torso')
+            correction_message = 'Increase the distance between your right arm and torso'
+            return output_image, label, correction_message
+          if feature == 'Right Shoulder Angle':
+            #print('Increase the distance between your left arm and torso')
+            correction_message = 'Increase the distance between your left arm and torso'
+            return output_image, label, correction_message
+          if feature == 'Right Knee Angle':
+            #print('Straighten your left leg')
+            correction_message = 'Straighten your left leg'
+            return output_image, label, correction_message
 
+      label = str(pose)
 
-    label = str(pose)
+    else:
+
+        if (current_pose[feature] < avg_features[feature] - 1.5*target_dev) or (current_pose[feature] > avg_features[feature] + 1.5*target_dev):
+          if feature == 'Torso Alginment':
+          #print('Align your torso')
+            correction_message = 'Align your torso'
+            return output_image, label, correction_message
+          if feature == 'Left Elbow Angle':
+            #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
+            correction_message = 'Straighten Your Right Arm'
+            return output_image, label, correction_message
+          if feature == 'Right Elbow Angle':
+            #print('Straighten Your Left Arm')
+            correction_message = 'Straighten Your Left Arm'
+            return output_image, label, correction_message
+          if feature == 'Left Shoulder Angle':
+            print('Increase the distance between your right arm and torso')
+            correction_message = 'Increase the distance between your right arm and torso'
+            return output_image, label, correction_message
+          if feature == 'Right Shoulder Angle':
+            #print('Increase the distance between your left arm and torso')
+            correction_message = 'Increase the distance between your left arm and torso'
+            return output_image, label, correction_message
+          if feature == 'Right Knee Angle':
+            #print('Straighten your left leg')
+            correction_message = 'Straighten your left leg'
+            return output_image, label, correction_message
+
+        label = str(pose)
+
 
 
 
@@ -311,7 +344,7 @@ class VideoCamera(object):
     # Return the output image and the classified label.
     return output_image, label, success_message
 
-  def get_frame(self, counter, current_label, database, pose=None):
+  def get_frame(self, counter, current_label, database, pose=None, user_level='beginner'):
     ok, frame = self.video.read()
 
     message_to_user = None
@@ -340,7 +373,7 @@ class VideoCamera(object):
 
           ##send request from python to java script ... asking for user input
 
-        frame, current_label, message_to_user = self.coach_pose(landmarks, frame, database, counter=counter, display=False, pose=pose) ##need to get the pose the user is saying here
+        frame, current_label, message_to_user = self.coach_pose(landmarks, frame, database, counter=counter, display=False, pose=pose, user_level=user_level) ##need to get the pose the user is saying here
         #print(message_to_user)
         ##send a request JS to output message to the user ...
 

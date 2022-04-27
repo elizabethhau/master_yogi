@@ -16,6 +16,8 @@ cors = CORS(app)
 # Build the pose database here instead of inside the camera funtion...
 global database
 global message_to_user
+global user_level
+user_level = str('beginner')
 database = pd.read_csv(r"yoga_poses_csvs_out_AnglesExtracted.csv")
 message_to_user = str('Let us do yoga')
 
@@ -29,11 +31,13 @@ def generate(camera):
   counter = 0
   current_label = 'Unknown Pose'
 
+
   global message_to_user
   global database
+  global user_level
 
   while True:
-    frame, current_label, message = camera.get_frame(counter, current_label, database, pose)
+    frame, current_label, message = camera.get_frame(counter, current_label, database, pose, user_level)
     #print("message = ", message)
     if message != None:
       message_to_user = message
@@ -63,6 +67,22 @@ async def coach():
         ##messages = {'plank': 'keep your back straight', 'tree': 'make sure your foot is not on your knee', 'warrior': 'generic feedback for warrior 2'}
         ##if hardcoding {'message': 'Lift your left arm'}
   return jsonify({'message': message_to_user})
+
+@app.route('/user_level', methods=["POST"])
+async def user_level():
+  data = request.get_json()
+  #print(data)
+  global user_level
+
+  user_level = data['user_level'].lower()
+
+  print(user_level)
+
+  #print(str('Coach says: '), message_to_user)
+
+        ##messages = {'plank': 'keep your back straight', 'tree': 'make sure your foot is not on your knee', 'warrior': 'generic feedback for warrior 2'}
+        ##if hardcoding {'message': 'Lift your left arm'}
+  return jsonify({'user_level': user_level})
 
 # Run the application
 if __name__ == '__main__':

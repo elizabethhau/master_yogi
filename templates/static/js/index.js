@@ -53,6 +53,58 @@ function loadPoseImage(poseString) {
     return result
 }
 
+function set_level_function(level) {
+
+    let result =false;
+    let user_level;
+    level_string = level.toLowerCase();
+
+    if (level_string.includes('advanced')) {
+
+        user_level = 'advanced';
+        result = true;
+
+    }
+
+    if (level_string.includes('beginner')) {
+
+        user_level = 'beginner';
+        result = true;
+
+    }
+
+    let success = false;
+    if (result) {
+        fetch("http://127.0.0.1:8000/user_level",
+        {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+                // dataType: 'json'
+            },
+            body: JSON.stringify({user_level: user_level})})
+        .then(res => {
+                if (res.ok) {
+                    success = true;
+                    return res.json()
+                }
+                alert('something went wrong')
+            })
+        .then(jsonResponse => {
+                let message = jsonResponse.message
+                generateSpeech(jsonResponse.message)
+                document.getElementById("feedback").innerText = message;
+                console.log(message)
+            })
+        .catch(err => console.error(err))
+    }
+
+
+
+    return result
+}
+
 function coachPose() {
     // console.log('about to fetch data')
     // console.log('in coach pose');

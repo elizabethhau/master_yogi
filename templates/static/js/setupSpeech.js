@@ -9,6 +9,7 @@
 // Output:
 //    processed, a boolean indicating whether the system reacted to the speech or not
 
+let level_set = false;
 
 const processSpeech = function (transcript) {
   // console.log('check mode is');
@@ -26,6 +27,10 @@ const processSpeech = function (transcript) {
   };
 
   var processed = false;
+
+  if (!level_set) {
+    processed = set_level_function(transcript)
+  }
   if (!hasLoadedPose) {
     processed = loadPoseImage(transcript);
   }
