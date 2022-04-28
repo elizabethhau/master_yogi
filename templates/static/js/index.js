@@ -45,16 +45,23 @@ function loadPoseImage(poseString) {
     }
 
     if (poseString.includes('warrior')) {
-        displayString += "Warrior2";
+        displayString += "Warrior 2";
         poseSelected = "warrior2";
-        imgSrc += "warrior-2.jpeg";
+        imgSrc += "warrior-2.jpeg"; // source: kaggle
         result = true;
     }
 
     if (poseString.includes('plank') || poseString.includes('play')) {
         displayString += "Plank"
         poseSelected = "plank";
-        imgSrc += "plank.jpeg";
+        imgSrc += "plank.jpeg"; // source: kaggle
+        result = true;
+    }
+
+    if (poseString.includes('down') || poseString.includes('dog')) {
+        displayString += "Downward Dog";
+        poseSelected = 'downdog';
+        imgSrc += "downward_dog.jpeg"; // source: https://pinpaws.com/ddownward-dog/
         result = true;
     }
     if (result) {
@@ -71,7 +78,7 @@ function loadPoseImage(poseString) {
             inCheckMode = true;
             // console.log('set check mode to true')
             // console.log('check mode is' + inCheckMode);
-        }, 3000)
+        }, 2500)
     }
 
     return result
@@ -112,7 +119,7 @@ function set_level_function(level) {
                 // alert('something went wrong')
             })
         .catch(err => console.error(err))
-        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose you would like to practice?');
+        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
     }
     return success
 }
