@@ -42,8 +42,8 @@ window.speechSynthesis.onvoiceschanged = function () {
 };
 
 const generateSpeech = function (message, callback) {
-  console.log("in generate speech, message is: ");
-  console.log(message);
+  // console.log("in generate speech, message is: ");
+  // console.log(message);
   if (voicesReady) {
     console.log("VOICE IS READY");
     // console.log(window.speechSynthesis.getVoices());

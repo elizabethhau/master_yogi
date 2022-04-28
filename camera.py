@@ -197,8 +197,6 @@ class VideoCamera(object):
     avg_features = pose_examples.mean()
     #print(avg_features)
 
-
-
     for item in stdevs.iteritems():
       ##check each feature prioritized by standard deviation of the feature, low standard deviation means important to the pose
       #print(item)
@@ -207,15 +205,13 @@ class VideoCamera(object):
       feature = item[0]
       target_dev = item[1]
       #print(feature)
-
-      ##check that feature against the realtime pose...
-      ##add if statement
       if user_level == 'beginner':
-        target_dev = 1.5*target_dev
+        target_dev = target_dev * 1.5
 
+      ##check that feature against the realtime pose
       if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
         if feature == 'Torso Alginment':
-        #print('Align your torso')
+          #print('Align your torso')
           correction_message = 'Align your torso'
           return output_image, label, correction_message
         if feature == 'Left Elbow Angle':
@@ -349,4 +345,3 @@ class VideoCamera(object):
     ok, jpeg = cv2.imencode('.jpg', frame)
 
     return jpeg.tobytes(), current_label, message_to_user
-

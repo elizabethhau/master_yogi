@@ -59,7 +59,7 @@ function loadPoseImage(poseString) {
         document.getElementById("pose_pic").src = imgSrc;
         document.getElementById("pose_pic").style.display = "inline";
         setTimeout(() => {
-            generateSpeech("Ok, please get into the pose. I will provide adjustments periodically as you practice this pose");
+            generateSpeech("Ok, please get into the pose. I will provide adjustments periodically as you practice this pose. At any point, if you cannot or don't want to continue with the pose, say 'skip'.");
             inCheckMode = true;
             // console.log('set check mode to true')
             // console.log('check mode is' + inCheckMode);
@@ -136,8 +136,19 @@ function coachPose() {
                 alert('something went wrong')
             })
         .then(jsonResponse => {
-                let message = jsonResponse.message
-                generateSpeech(jsonResponse.message)
+            let message = jsonResponse.message
+            generateSpeech(jsonResponse.message)
+            if (message.includes('Good job')) {
+                    //TODO: reset variables
+                    reset();
+                    // hasLoadedPose = false;
+                    // poseSelected = '';
+                    // inCheckMode = false;
+                    // document.getElementById("pose_text").innerHTML = "<ul>Choose one of the available poses: <li>warrior 2</li><li>plank</li><li>downward dog</li></ul>";
+                    // document.getElementById("pose_pic").src = "";
+                    // document.getElementById("pose_pic").style.display = "none";
+                    generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
+                }
                 document.getElementById("feedback").innerText = message;
                 console.log(message)
             })
@@ -145,6 +156,15 @@ function coachPose() {
     }
     return success
 
+}
+
+function reset() {
+    hasLoadedPose = false;
+    poseSelected = '';
+    inCheckMode = false;
+    document.getElementById("pose_text").innerHTML = "<ul>Choose one of the available poses: <li>warrior 2</li><li>plank</li><li>downward dog</li></ul>";
+    document.getElementById("pose_pic").src = "";
+    document.getElementById("pose_pic").style.display = "none";
 }
 
 var checkingpose = setInterval(coachPose
