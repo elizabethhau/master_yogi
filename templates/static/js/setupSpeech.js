@@ -26,16 +26,30 @@ const processSpeech = function (transcript) {
   };
 
   var processed = false;
+  console.log('said start yoga ' + saidStartYoga );
+  console.log('set level ' + level_set);
+  console.log('loadedpose ' + hasLoadedPose);
 
   if (!saidStartYoga) {
-    processed = setStartYoga(transcript);
+    console.log('trying to begin')
+    console.log(transcript);
+    setTimeout(() => setStartYoga(transcript), 8000);
+    processed = true;
   }
   else if (!level_set) {
-    processed = set_level_function(transcript)
+    console.log('trying to set level');
+    console.log(transcript);
+    processed  = set_level_function(transcript)
+
   }
   else if (!hasLoadedPose) {
+    console.log('trying to load pose');
     processed = loadPoseImage(transcript);
   }
+  // else if (isListeningForRestart) {
+  //   processed = setTimeout(() => skip(transcript), 5000);
+  // }
+
 
   return processed;
 };

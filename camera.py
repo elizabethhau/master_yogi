@@ -210,64 +210,38 @@ class VideoCamera(object):
 
       ##check that feature against the realtime pose...
       ##add if statement
-      if user_level == 'advanced':
-        print("advanced!!")
+      if user_level == 'beginner':
+        target_dev = 1.5*target_dev
+      # if user_level == 'advanced':
+      #   print("advanced!!")
 
-        if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
-          if feature == 'Torso Alginment':
-          #print('Align your torso')
-            correction_message = 'Align your torso'
-            return output_image, label, correction_message
-          if feature == 'Left Elbow Angle':
-            #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
-            correction_message = 'Straighten Your Right Arm'
-            return output_image, label, correction_message
-          if feature == 'Right Elbow Angle':
-            #print('Straighten Your Left Arm')
-            correction_message = 'Straighten Your Left Arm'
-            return output_image, label, correction_message
-          if feature == 'Left Shoulder Angle':
-            print('Increase the distance between your right arm and torso')
-            correction_message = 'Increase the distance between your right arm and torso'
-            return output_image, label, correction_message
-          if feature == 'Right Shoulder Angle':
-            #print('Increase the distance between your left arm and torso')
-            correction_message = 'Increase the distance between your left arm and torso'
-            return output_image, label, correction_message
-          if feature == 'Right Knee Angle':
-            #print('Straighten your left leg')
-            correction_message = 'Straighten your left leg'
-            return output_image, label, correction_message
-          label = str(pose)
-      else:
+      if (current_pose[feature] < avg_features[feature] - target_dev) or (current_pose[feature] > avg_features[feature] + target_dev):
+        if feature == 'Torso Alginment':
+        #print('Align your torso')
+          correction_message = 'Align your torso'
+          return output_image, label, correction_message
+        if feature == 'Left Elbow Angle':
+          #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
+          correction_message = 'Straighten Your Right Arm'
+          return output_image, label, correction_message
+        if feature == 'Right Elbow Angle':
+          #print('Straighten Your Left Arm')
+          correction_message = 'Straighten Your Left Arm'
+          return output_image, label, correction_message
+        if feature == 'Left Shoulder Angle':
+          print('Increase the distance between your right arm and torso')
+          correction_message = 'Increase the distance between your right arm and torso'
+          return output_image, label, correction_message
+        if feature == 'Right Shoulder Angle':
+          #print('Increase the distance between your left arm and torso')
+          correction_message = 'Increase the distance between your left arm and torso'
+          return output_image, label, correction_message
+        if feature == 'Right Knee Angle':
+          #print('Straighten your left leg')
+          correction_message = 'Straighten your left leg'
+          return output_image, label, correction_message
 
-        if (current_pose[feature] < avg_features[feature] - 1.5*target_dev) or (current_pose[feature] > avg_features[feature] + 1.5*target_dev):
-          if feature == 'Torso Alginment':
-          #print('Align your torso')
-            correction_message = 'Align your torso'
-            return output_image, label, correction_message
-          if feature == 'Left Elbow Angle':
-            #print('Straighten Your Right Arm') ##figured out these are reversed so coding the correction opposite
-            correction_message = 'Straighten Your Right Arm'
-            return output_image, label, correction_message
-          if feature == 'Right Elbow Angle':
-            #print('Straighten Your Left Arm')
-            correction_message = 'Straighten Your Left Arm'
-            return output_image, label, correction_message
-          if feature == 'Left Shoulder Angle':
-            print('Increase the distance between your right arm and torso')
-            correction_message = 'Increase the distance between your right arm and torso'
-            return output_image, label, correction_message
-          if feature == 'Right Shoulder Angle':
-            #print('Increase the distance between your left arm and torso')
-            correction_message = 'Increase the distance between your left arm and torso'
-            return output_image, label, correction_message
-          if feature == 'Right Knee Angle':
-            #print('Straighten your left leg')
-            correction_message = 'Straighten your left leg'
-            return output_image, label, correction_message
-
-          label = str(pose)
+    label = str(pose)
 
     #if right_elbow_angle < 165 or right_elbow_angle > 195:
       #print('Extend your right arm straight')

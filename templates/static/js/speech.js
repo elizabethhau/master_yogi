@@ -29,7 +29,6 @@ $(function() {
   generateSpeech('Hello! Welcome to Master Yogi!');
   setTimeout(() => generateSpeech('My name is ' + coach), 2000);
   setTimeout(() => generateSpeech('I will be helping you with your practice for today.'), 5500);
-
   setTimeout(() => generateSpeech('To begin, say \"let\'s start yoga!"'), 9000);
   // setTimeout(() => generateSpeech(''), 2000);
 });
