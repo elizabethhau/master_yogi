@@ -180,6 +180,7 @@ function reset() {
 
 function skip(transcript) {
     if (transcript.includes('skip')) {
+        hasCompletedPose = true;
         reset();
         generateSpeech('Ok, skipping this pose. If you would like to practice another pose, say it.');
         coachFetchedCount = 0; // reset this count to 0 to restart the "listening for skip" process

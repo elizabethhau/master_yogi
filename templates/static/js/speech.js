@@ -1,7 +1,7 @@
 // SPEECH SYNTHESIS SETUP
 let voicesReady = false;
-let voiceIndices = [0]
-// let voiceIndices = [0, 7, 11, 17, 28, 32, 37, 41, 40, 49, 50, 51]
+// let voiceIndices = [0]
+let voiceIndices = [0, 7, 11, 17, 28, 32, 37, 41, 40, 49, 50, 51]
 let coachIndex;
 let coach;
 let msg = new SpeechSynthesisUtterance();
@@ -15,8 +15,8 @@ $(function() {
   console.log( "page is ready! selecting a coach for today" );
   coachIndex = voiceIndices[Math.floor(Math.random()*voiceIndices.length)]
   msg.voice =  window.speechSynthesis.getVoices()[coachIndex];
-  // coach = window.speechSynthesis.getVoices()[coachIndex].name;
-  coach = 'Alex';
+  coach = window.speechSynthesis.getVoices()[coachIndex].name;
+  // coach = 'Alex';
   if (coach.includes('Google')) {
     if (coach.includes('Female')) {
       coach = femaleNames[Math.floor(Math.random()*femaleNames.length)]
@@ -29,8 +29,7 @@ $(function() {
   console.log(coach);
   generateSpeech('Hello! Welcome to Master Yogi!');
   setTimeout(() => generateSpeech('My name is ' + coach), 2000);
-  setTimeout(() => generateSpeech('I will be helping you with your practice for today.'), 5500);
-
+  setTimeout(() => generateSpeech('I will be helping you with your practice today.'), 5500);
   setTimeout(() => generateSpeech('To begin, say \"let\'s start yoga!"'), 9000);
   // setTimeout(() => generateSpeech(''), 2000);
 });
