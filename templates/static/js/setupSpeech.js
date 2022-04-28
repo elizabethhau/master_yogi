@@ -9,7 +9,6 @@
 // Output:
 //    processed, a boolean indicating whether the system reacted to the speech or not
 
-let level_set = false;
 
 const processSpeech = function (transcript) {
   // console.log('check mode is');
@@ -28,10 +27,13 @@ const processSpeech = function (transcript) {
 
   var processed = false;
 
-  if (!level_set) {
+  if (!saidStartYoga) {
+    processed = setStartYoga(transcript);
+  }
+  else if (!level_set) {
     processed = set_level_function(transcript)
   }
-  if (!hasLoadedPose) {
+  else if (!hasLoadedPose) {
     processed = loadPoseImage(transcript);
   }
 
@@ -59,8 +61,6 @@ recognition.onresult = function(event) {
       // console.log("SPEECH DEBUG: ready");
       document.getElementById('speech').innerText = "System ready: listening..."
     }
-
-
       // otherFeedback.setContent("SPEECH DEBUG: ready");
     else {
       // console.log("SPEECH DEBUG: " + transcript);

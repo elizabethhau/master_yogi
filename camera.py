@@ -238,10 +238,8 @@ class VideoCamera(object):
             #print('Straighten your left leg')
             correction_message = 'Straighten your left leg'
             return output_image, label, correction_message
-
-      label = str(pose)
-
-    else:
+          label = str(pose)
+      else:
 
         if (current_pose[feature] < avg_features[feature] - 1.5*target_dev) or (current_pose[feature] > avg_features[feature] + 1.5*target_dev):
           if feature == 'Torso Alginment':
@@ -269,15 +267,7 @@ class VideoCamera(object):
             correction_message = 'Straighten your left leg'
             return output_image, label, correction_message
 
-        label = str(pose)
-
-
-
-
-
-
-
-
+          label = str(pose)
 
     #if right_elbow_angle < 165 or right_elbow_angle > 195:
       #print('Extend your right arm straight')

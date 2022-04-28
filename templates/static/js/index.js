@@ -1,12 +1,28 @@
-var hasLoadedPose = false;
-var inCheckMode = false;
+let saidStartYoga = false;
+let level_set = false;
+let user_level;
+let hasLoadedPose = false;
 let poseSelected = '';
+let inCheckMode = false;
 
 function everyTime() {
     console.log('each 1 second...');
 }
 
 var myInterval = setInterval(everyTime, 1000);
+
+function setStartYoga(transcript) {
+    transcript = transcript.toLowerCase();
+    setTimeout(() => {
+        if (transcript.includes('yoga')) {
+        saidStartYoga = true;
+        generateSpeech('Great! I can coach you as a beginner or advanced yogi. Please tell me your skill level');
+        return true;
+    }
+    }, 2000);
+
+    return false;
+}
 
 function loadPoseImage(poseString) {
     console.log('in load pose image')
@@ -43,7 +59,7 @@ function loadPoseImage(poseString) {
         document.getElementById("pose_pic").src = imgSrc;
         document.getElementById("pose_pic").style.display = "inline";
         setTimeout(() => {
-            generateSpeech("Ok, entering check mode. I will provide adjustments periodically as you practice this pose");
+            generateSpeech("Ok, please get into the pose. I will provide adjustments periodically as you practice this pose");
             inCheckMode = true;
             // console.log('set check mode to true')
             // console.log('check mode is' + inCheckMode);
@@ -54,8 +70,7 @@ function loadPoseImage(poseString) {
 }
 
 function set_level_function(level) {
-    let result =false;
-    let user_level;
+    let result = false;
     level_string = level.toLowerCase();
 
     if (level_string.includes('advanced') || level_string.includes('advance')) {
@@ -81,23 +96,18 @@ function set_level_function(level) {
             body: JSON.stringify({user_level: user_level})})
         .then(res => {
                 if (res.ok) {
+                    level_set = true;
                     success = true;
-                    return res.json()
+                    return success;
                 }
-                alert('something went wrong')
-            })
-        .then(jsonResponse => {
-                let message = jsonResponse.message
-                generateSpeech(jsonResponse.message)
-                document.getElementById("feedback").innerText = message;
-                console.log(message)
+                return false;
+                // alert('something went wrong')
             })
         .catch(err => console.error(err))
+        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more poses. Let me know which pose you would like to practice');
+         // When you are ready for feedback, tell me the pose you selected and say "check"
     }
-
-
-
-    return result
+    return success
 }
 
 function coachPose() {
