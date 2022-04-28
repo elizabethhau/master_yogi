@@ -4,9 +4,13 @@ let user_level;
 let hasLoadedPose = false;
 let poseSelected = '';
 let inCheckMode = false;
+let hasCompletedPose = false; // if the user has already been coached through a pose once, avoid repeating some of the messages we say to the user.
+let coachFetchedCount = 0; // this is used to determine if we should start listening for "skip" from the user
+// let seenGoodJob = false;
 
 function everyTime() {
     console.log('each 1 second...');
+    // console.log('coached feedback count is: ' + coachFetchedCount);
 }
 
 var myInterval = setInterval(everyTime, 1000);
@@ -19,7 +23,7 @@ function setStartYoga(transcript) {
         generateSpeech('Great! I can coach you as a beginner or advanced yogi. Please tell me your skill level');
         return true;
     }
-    }, 2000);
+    }, 2500);
 
     return false;
 }
@@ -59,7 +63,11 @@ function loadPoseImage(poseString) {
         document.getElementById("pose_pic").src = imgSrc;
         document.getElementById("pose_pic").style.display = "inline";
         setTimeout(() => {
-            generateSpeech("Ok, please get into the pose. I will provide adjustments periodically as you practice this pose. At any point, if you cannot or don't want to continue with the pose, say 'skip'.");
+            let message = "Ok, please get into the pose. I will provide adjustments periodically as you practice this pose.";
+            if (!hasCompletedPose) {
+                message += " At any point, if you cannot or don't want to continue with the pose, say 'skip'.";
+            }
+            generateSpeech(message);
             inCheckMode = true;
             // console.log('set check mode to true')
             // console.log('check mode is' + inCheckMode);
@@ -104,8 +112,7 @@ function set_level_function(level) {
                 // alert('something went wrong')
             })
         .catch(err => console.error(err))
-        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more poses. Let me know which pose you would like to practice');
-         // When you are ready for feedback, tell me the pose you selected and say "check"
+        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose you would like to practice?');
     }
     return success
 }
@@ -130,28 +137,25 @@ function coachPose() {
             body: JSON.stringify({pose: poseSelected})})
         .then(res => {
                 if (res.ok) {
+                    coachFetchedCount += 1;
                     success = true;
                     return res.json()
                 }
-                alert('something went wrong')
+                // alert('something went wrong') // good for debugging purposes, but in real life we wouldn't want the user to see this
             })
         .then(jsonResponse => {
             let message = jsonResponse.message
             generateSpeech(jsonResponse.message)
             if (message.includes('Good job')) {
-                    //TODO: reset variables
-                    reset();
-                    // hasLoadedPose = false;
-                    // poseSelected = '';
-                    // inCheckMode = false;
-                    // document.getElementById("pose_text").innerHTML = "<ul>Choose one of the available poses: <li>warrior 2</li><li>plank</li><li>downward dog</li></ul>";
-                    // document.getElementById("pose_pic").src = "";
-                    // document.getElementById("pose_pic").style.display = "none";
-                    generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
-                }
-                document.getElementById("feedback").innerText = message;
-                console.log(message)
-            })
+                // seenGoodJob = true;
+                //TODO: reset variables
+                reset();
+                hasCompletedPose = true;
+                generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
+            }
+            document.getElementById("feedback").innerText = message;
+            console.log(message)
+        })
         .catch(err => console.error(err))
     }
     return success
@@ -165,6 +169,16 @@ function reset() {
     document.getElementById("pose_text").innerHTML = "<ul>Choose one of the available poses: <li>warrior 2</li><li>plank</li><li>downward dog</li></ul>";
     document.getElementById("pose_pic").src = "";
     document.getElementById("pose_pic").style.display = "none";
+}
+
+function skip(transcript) {
+    if (transcript.includes('skip')) {
+        reset();
+        generateSpeech('Ok, skipping this pose. If you would like to practice another pose, say it.');
+        coachFetchedCount = 0; // reset this count to 0 to restart the "listening for skip" process
+        return true;
+    }
+    return false;
 }
 
 var checkingpose = setInterval(coachPose

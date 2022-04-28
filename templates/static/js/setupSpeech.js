@@ -29,12 +29,12 @@ const processSpeech = function (transcript) {
 
   if (!saidStartYoga) {
     processed = setStartYoga(transcript);
-  }
-  else if (!level_set) {
+  } else if (!level_set) {
     processed = set_level_function(transcript)
-  }
-  else if (!hasLoadedPose) {
+  } else if (!hasLoadedPose) {
     processed = loadPoseImage(transcript);
+  } else if (coachFetchedCount > 2) {
+    processed = skip(transcript);
   }
 
   return processed;
@@ -83,7 +83,6 @@ recognition.onend = function(event) {
     // if (DEBUGSPEECH)
     // otherFeedback.setContent("SPEECH DEBUG: ready");
     console.log('SPEECH DEBUG: ready')
-    // generateSpeech("Ready to talk!!") // test generate speech
     recognition.start();
   }, 1000);
 };

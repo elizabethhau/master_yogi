@@ -8,6 +8,7 @@ let msg = new SpeechSynthesisUtterance();
 const femaleNames = ['Olivia', 'Emma', 'Ava', 'Charlotte', 'Sophia', 'Amelia', 'Isabella', 'Mia', 'Emily', 'Lily'];
 const maleNames = ['Liam', 'Noah', 'Oliver', 'William', 'James', 'Lucas', 'Adam', 'Robert', 'Max', 'Aaron'];
 const genderNeutralNames = ['Morgan', 'Taylor', 'Alex', 'Blake'];
+let prevMessage = '';
 
 // This gets called on page load, excluding refreshes.
 $(function() {
@@ -55,6 +56,13 @@ const generateSpeech = function (message, callback) {
     if (typeof callback !== "undefined") {
       msg.onend = callback;
     }
+    prevMessage = message;
+    // if the current message is the same as the previous message, don't say it
+    // if (!inCheckMode && prevMessage == message) {
+    //   console.log('********* same message noticed, not going to repeat ***********');
+    // } else {
+    //   window.speechSynthesis.speak(msg);
+    // }
     window.speechSynthesis.speak(msg);
   }
 };
