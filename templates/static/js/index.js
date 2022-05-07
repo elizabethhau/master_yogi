@@ -61,7 +61,7 @@ function loadPoseImage(poseString) {
     if (poseString.includes('down') || poseString.includes('dog')) {
         displayString += "Downward Dog";
         poseSelected = 'downdog';
-        imgSrc += "downward_dog.jpeg"; // source: https://pinpaws.com/ddownward-dog/
+        imgSrc += "downward-dog.jpg"; // source: https://pinpaws.com/ddownward-dog/
         result = true;
     }
     if (result) {
@@ -152,13 +152,15 @@ function coachPose() {
             })
         .then(jsonResponse => {
             let message = jsonResponse.message
-            generateSpeech(jsonResponse.message)
+
             if (message.includes('Good job')) {
                 // seenGoodJob = true;
                 //TODO: reset variables
                 reset();
                 hasCompletedPose = true;
                 generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
+            } else {
+                generateSpeech(jsonResponse.message)
             }
             document.getElementById("feedback").innerText = message;
             console.log(message)
@@ -188,7 +190,16 @@ function skip(transcript) {
     }
     return false;
 }
+/*
+function endPractice(transcript) {
+    if (transcript.includes('no')) {
+        generateSpeech('Ok, thanks for practicing with me today. Namaste');
 
+        return true;
+    }
+    return false;
+}
+*/
 var checkingpose = setInterval(coachPose
   , 10000);
 

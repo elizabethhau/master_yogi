@@ -31,8 +31,12 @@ const processSpeech = function (transcript) {
     processed = setStartYoga(transcript);
   } else if (!level_set) {
     processed = set_level_function(transcript)
-  } else if (!hasLoadedPose) {
+  } //else if (transcript.includes('no')) {
+    //processed = endPractice(transcript);
+  //}
+  else if (!hasLoadedPose) {
     processed = loadPoseImage(transcript);
+  // } else if (transcript.includes('skip')) {
   } else if (coachFetchedCount > 2) {
     processed = skip(transcript);
   }
