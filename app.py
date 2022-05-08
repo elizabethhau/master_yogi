@@ -19,7 +19,7 @@ global message_to_user
 global user_level
 user_level = str('beginner')
 database = pd.read_csv(r"yoga_poses_csvs_out_AnglesExtracted.csv")
-message_to_user = str('Let us do yoga')
+message_to_user = str('Let\'s do yoga')
 
 pose = None
 
@@ -38,7 +38,6 @@ def generate(camera):
 
   while True:
     frame, current_label, message = camera.get_frame(counter, current_label, database, pose, user_level) # User level will get passed to camera for every frame
-    #print("message = ", message)
     if message != None:
       message_to_user = message
 
@@ -59,13 +58,10 @@ async def coach():
   global message_to_user
 
   pose = data['pose'].lower()
-  #working = pose.split(':')
   print(pose)
   await asyncio.sleep(2)
   print(str('Coach says: '), message_to_user)
 
-        ##messages = {'plank': 'keep your back straight', 'tree': 'make sure your foot is not on your knee', 'warrior': 'generic feedback for warrior 2'}
-        ##if hardcoding {'message': 'Lift your left arm'}
   return jsonify({'message': message_to_user})
 
 # User level gets updated to whatever the user says
@@ -74,12 +70,8 @@ async def user_level():
   data = request.get_json()
   print(data)
   global user_level
-
   user_level = data['user_level'].lower()
-
   print(user_level)
-
-
   return jsonify({'user_level': user_level})
 
 # Run the application
