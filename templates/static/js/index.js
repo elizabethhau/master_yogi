@@ -6,7 +6,6 @@ let poseSelected = '';
 let inCheckMode = false;
 let hasCompletedPose = false; // if the user has already been coached through a pose once, avoid repeating some of the messages we say to the user.
 let coachFetchedCount = 0; // this is used to determine if we should start listening for "skip" from the user
-// let seenGoodJob = false;
 
 function everyTime() {
     console.log('each 1 second...');
@@ -20,7 +19,8 @@ function setStartYoga(transcript) {
     setTimeout(() => {
         if (transcript.includes('yoga')) {
         saidStartYoga = true;
-        generateSpeech('Great! I can coach you as a beginner or advanced yogi. Please tell me your skill level');
+        generateSpeech('Great! What is your skill level?');
+        // generateSpeech('Great! I can coach you as a beginner or advanced yogi. Please tell me your skill level');
         return true;
     }
     }, 2500);
@@ -88,12 +88,12 @@ function set_level_function(level) {
     let result = false;
     level_string = level.toLowerCase();
 
-    if (level_string.includes('advanced') || level_string.includes('advance')) {
+    if (level_string.includes('advanced') || level_string.includes('advance') || level_string.includes('intermediate') || level_string.includes('experienced') || level_string.includes('elite') || level_string.includes('master')) {
         user_level = 'advanced';
         result = true;
     }
 
-    if (level_string.includes('beginner') || level_string.includes('begin')) {
+    if (level_string.includes('beginner') || level_string.includes('begin') || level_string.includes('novice')) {
         user_level = 'beginner';
         result = true;
     }
@@ -108,18 +108,20 @@ function set_level_function(level) {
                 'Accept': 'application/json'
                 // dataType: 'json'
             },
-            body: JSON.stringify({user_level: user_level})})
+            body: JSON.stringify({user_level})})
         .then(res => {
                 if (res.ok) {
                     level_set = true;
                     success = true;
+                    generateSpeech('Ok, the level has been set to ' + level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
+                    // generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
                     return success;
                 }
                 return false;
                 // alert('something went wrong')
             })
         .catch(err => console.error(err))
-        generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
+
     }
     return success
 }
@@ -154,8 +156,6 @@ function coachPose() {
             let message = jsonResponse.message
 
             if (message.includes('Good job')) {
-                // seenGoodJob = true;
-                //TODO: reset variables
                 reset();
                 hasCompletedPose = true;
                 generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
@@ -190,16 +190,18 @@ function skip(transcript) {
     }
     return false;
 }
-/*
+
 function endPractice(transcript) {
     if (transcript.includes('no')) {
         generateSpeech('Ok, thanks for practicing with me today. Namaste');
-
+        document.getElementById("pose_text").innerText = 'Thank you for practicing with me today!';
+        document.getElementById("pose_pic").src = '/static/images/namaste.jpg';
+        document.getElementById("pose_pic").style.display = "inline";
         return true;
     }
     return false;
 }
-*/
+
 var checkingpose = setInterval(coachPose
   , 10000);
 
