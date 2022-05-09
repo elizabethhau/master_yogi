@@ -205,7 +205,7 @@ function endPractice(transcript) {
         document.getElementById("pose_text").innerText = 'Thank you for practicing with me today!';
         document.getElementById("pose_pic").src = '/static/images/namaste.jpg';
         document.getElementById("pose_pic").style.display = "inline";
-        setTimeout(() => generateSpeech('Thanks for practicing with me today! Namaste.'), 1000);
+        setTimeout(() => generateSpeech('Thanks for practicing with me today!'), 1000);
         hasEnded = true;
         return true;
     }
