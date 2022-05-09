@@ -41,7 +41,7 @@ Our back-end is built with python's Flask. Back-end files include:
   * `coach`: Given the pose selected by the user (from JS), fetch feedback for the user and pass it back to the front-end
   * `user_level`: Given the user selected level, set the system to either provide stricter feedback (advanced users) or more lenient feedback (to beginner users)
 
-* camera.py: Defines a Camera object that processes video frames and performs pose detection, classification, and feedback recommendation based on the provided user level, which is currently either "beginner" or "advanced." The advanced level will be more strict about the relative angles between the joints. 
+* `camera.py`: Defines a Camera object that processes video frames and performs pose detection, classification, and feedback recommendation based on the provided user level, which is currently either "beginner" or "advanced." The advanced level will be more strict about the relative angles between the joints. 
 
 ### Data:
 We have included two files that we used as training data in the repository as well:
