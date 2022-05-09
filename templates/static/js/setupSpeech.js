@@ -34,8 +34,8 @@ const processSpeech = function (transcript) {
   }
   else if (!hasLoadedPose) {
     processed = loadPoseImage(transcript);
-  } else if (transcript.includes('skip')) {
-  // } else if (coachFetchedCount > 2) {
+  // } else if (transcript.includes('skip')) {
+  } else if (coachFetchedCount > 2) {
     processed = skip(transcript);
   }
 

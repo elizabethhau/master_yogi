@@ -6,6 +6,7 @@ let poseSelected = '';
 let inCheckMode = false;
 let hasCompletedPose = false; // if the user has already been coached through a pose once, avoid repeating some of the messages we say to the user.
 let coachFetchedCount = 0; // this is used to determine if we should start listening for "skip" from the user
+let hasEnded = false;
 
 function everyTime() {
     console.log('each 1 second...');
@@ -64,6 +65,13 @@ function loadPoseImage(poseString) {
         imgSrc += "downward-dog.jpg"; // source: https://pinpaws.com/ddownward-dog/
         result = true;
     }
+
+    // if the user has completed at least one pose already and we hear "no" when we ask if the user would like to continue, end practice
+    if (hasCompletedPose && !hasEnded && poseString.length < 5 && poseString.includes('no')) {
+        console.log('no detected!');
+        console.log(poseString);
+        endPractice(poseString);
+    }
     if (result) {
         hasLoadedPose = true;
         document.getElementById("pose_text").innerText = displayString;
@@ -113,6 +121,7 @@ function set_level_function(level) {
                 if (res.ok) {
                     level_set = true;
                     success = true;
+                    console.log('level has been set');
                     generateSpeech('Ok, the level has been set to ' + level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
                     // generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
                     return success;
@@ -158,7 +167,7 @@ function coachPose() {
             if (message.includes('Good job')) {
                 reset();
                 hasCompletedPose = true;
-                generateSpeech('Now please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
+                generateSpeech('Please hold the pose for a count of 10. 10 ... 9 ... 8 ... 7 ... 6 ... 5 ... 4 ... 3 ... 2 ... 1 ... Great job! Would you like to practice another pose? If so, say it.');
             } else {
                 generateSpeech(jsonResponse.message)
             }
@@ -193,10 +202,11 @@ function skip(transcript) {
 
 function endPractice(transcript) {
     if (transcript.includes('no')) {
-        generateSpeech('Ok, thanks for practicing with me today. Namaste');
         document.getElementById("pose_text").innerText = 'Thank you for practicing with me today!';
         document.getElementById("pose_pic").src = '/static/images/namaste.jpg';
         document.getElementById("pose_pic").style.display = "inline";
+        setTimeout(() => generateSpeech('Thanks for practicing with me today! Namaste.'), 1000);
+        hasEnded = true;
         return true;
     }
     return false;
