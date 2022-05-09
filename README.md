@@ -24,8 +24,7 @@ Then, open local host on your favorite browser: `http://0.0.0.0:8000/`. Follow t
 ## Potential Errors
 You may encounter some errors, so we've compiled a list of resolutions here:
 
-1. Microphone/camera is not working on Google Chrome for unsecure origins
-Follow the instructions here: https://medium.com/@Carmichaelize/enabling-the-microphone-camera-in-chrome-for-local-unsecure-origins-9c90c3149339
+1. Microphone/camera is not working on Google Chrome for insecure origins: Navigate to `chrome://settings/content/sound` and manually adding `http://127.0.0.1:8000/` to a list of sites "Allowed to play sound" (https://medium.com/@Carmichaelize/enabling-the-microphone-camera-in-chrome-for-local-unsecure-origins-9c90c3149339)
 
 ## Authors
 LGO 22s Elizabeth Hau, Andrew Tindall, and Sravani Yajamanam Kidambi.
