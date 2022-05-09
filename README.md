@@ -4,7 +4,7 @@
 ## Project Description
 Our application coaches beginners through a series of yoga poses to help them improve their posture. The coaching is generalizable to any individual and body-shape agnostic. 
 
-Our team used OpenCV2 for real-time 3D pose detection and pose classification. We developed a friendly UI for users to interact with and get personalized feedback.
+Our team used OpenCV2 and Google's mediapipe for real-time 3D pose detection and pose classification. We developed a friendly UI for users to interact with and get personalized feedback.
 
 ## Installation
 Master Yogi has been developed and tested on Python 3.7, so earlier versions may or may not work.
