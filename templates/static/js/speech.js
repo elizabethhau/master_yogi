@@ -1,3 +1,7 @@
+/*****************************************************************/
+/*************** SPEECH GENERATION SETUP  ***********************/
+/*****************************************************************/
+
 // SPEECH SYNTHESIS SETUP
 let voicesReady = false;
 // let voiceIndices = [0]
@@ -46,9 +50,7 @@ const generateSpeech = function (message, callback) {
   // console.log(message);
   if (voicesReady) {
     console.log("VOICE IS READY");
-    // console.log(window.speechSynthesis.getVoices());
     msg.text = message;
-    // msg.rate = 0.2;
     msg.rate = 0.8;
     msg.volume = 1;
     // console.log(msg);

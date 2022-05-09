@@ -31,7 +31,6 @@ def generate(camera):
   counter = 0
   current_label = 'Unknown Pose'
 
-
   global message_to_user
   global database
   global user_level
@@ -41,7 +40,7 @@ def generate(camera):
     if message != None:
       message_to_user = message
 
-    counter+=1
+    counter += 1
     yield(b'--frame\n'
     b'Content-Type: image/jpeng\n\n' + frame + b'\n\n')
 
@@ -64,7 +63,7 @@ async def coach():
 
   return jsonify({'message': message_to_user})
 
-# User level gets updated to whatever the user says
+# User level gets updated to either "beginner" or "advanced" depending on the user's selection
 @app.route('/user_level', methods=["POST"])
 async def user_level():
   data = request.get_json()

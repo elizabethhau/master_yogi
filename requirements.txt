@@ -6,4 +6,3 @@ pandas
 Flask-Cors==3.0.10
 aioflask
 asyncio
-
