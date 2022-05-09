@@ -122,6 +122,7 @@ function set_level_function(level) {
                     level_set = true;
                     success = true;
                     console.log('level has been set');
+                    document.getElementById('user_level').innerText = "User Level: " + user_level;
                     generateSpeech('Ok, the level has been set to ' + level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
                     // generateSpeech('Ok, the level has been set to ' + user_level + '. I can currently coach the three poses listed on the screen. I am in the process of learning more. Which pose would you like to practice?');
                     return success;
