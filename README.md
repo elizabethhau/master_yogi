@@ -44,7 +44,9 @@ Our back-end is built with python's Flask. Back-end files include:
 * `camera.py`: Defines a Camera object that processes video frames and performs pose detection, classification, and feedback recommendation based on the provided user level, which is currently either "beginner" or "advanced." The advanced level will be more strict about the relative angles between the joints. 
 
 ### Data:
-We have included two files that we used as training data in the repository as well:
+We have included two files that we used as training data in the repository as well, a Jupyter Notebook that runs offline to execute the feature extraction and a .csv file that this notebook produces... to have the system perform on more poses you simply need to run this notebook with more training examples of the desired pose. This will generate a new "feature database" that the realtime system can use:
+
+* Pose_Feature_Extraction_Offline.ipynb: notebook that takes in a database of label yoga pose photos and returns a database with angle features extracted for each type of pose -- this is "yoga_poses_csvs_out_AnglesExtracted.csv" which is used as the basis for pose corrections and classifications. 
 * `yoga_poses_csvs_out_AnglesExtracted.csv`: This file contains the training data extracted from images we used to train our system. The data contains angles between detected body joints 
 * `yoga_poses_csvs_out_basic (4).csv`
 
